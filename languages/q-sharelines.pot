@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Q Control\n"
+"POT-Creation-Date: 2015-01-12 19:47+0100\n"
+"PO-Revision-Date: 2015-01-12 19:48+0100\n"
+"Last-Translator: Ray <ray@qstudio.us>\n"
+"Language-Team: Q Studio <team@qstudio.us>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: ../q-sharelines.php:79 ../q-sharelines.php:216 ../q-sharelines.php:707
+msgid "Sharelines"
+msgstr ""
+
+#: ../q-sharelines.php:80
+msgid "Suggested content sharing snippets"
+msgstr ""
+
+#: ../q-sharelines.php:190
+msgid "Search"
+msgstr ""
+
+#: ../q-sharelines.php:221
+msgid "Title:"
+msgstr ""
+
+#: ../q-sharelines.php:225
+msgid "Facebook App ID:"
+msgstr ""
+
+#: ../q-sharelines.php:771
+msgid "Shared :)"
+msgstr ""
+
+#: ../q-sharelines.php:773
+msgid "Failed :("
+msgstr ""
+
+#: ../q-sharelines.php:781
+msgid "Facebook Error :("
+msgstr ""

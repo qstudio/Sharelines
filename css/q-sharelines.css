@@ -1,0 +1,12 @@
+/* 
+Plugin Title: Q Sharelines
+Version: 0.1
+*/
+
+.q_shareline_item {
+    cursor: pointer;
+}
+
+.q_shareline_item:hover {
+    text-decoration: underline;
+}
