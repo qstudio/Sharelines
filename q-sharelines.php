@@ -4,7 +4,7 @@
  * Plugin Name:     Sharelines
  * Plugin URI:      https://qstudio.us
  * Description:     Suggest content for your users to share on social networks
- * Version:         0.1
+ * Version:         0.2
  * Author:          Q Studio
  * Author URI:      https://qstudio.us/releases/sharelines
  * License:         GPL2
@@ -17,9 +17,6 @@ defined( 'ABSPATH' ) OR exit;
 register_deactivation_hook( __FILE__, array( 'Q_Sharelines', 'on_deactivation' ) );
 
 if ( ! class_exists( 'Q_Sharelines' ) ) {
-    
-    // instatiate plugin via WP plugins_loaded - init is too late for CPT ##
-    #add_action( 'plugins_loaded', array ( 'Q_Sharelines', 'get_instance' ), 5 );
     
     // register widget ##
     add_action( 'widgets_init', 'register_q_sharelines', 0 );
@@ -36,12 +33,11 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
         private static $instance = null;
                        
         // Plugin Settings
-        const version = '0.1';
+        const version = '0.2';
         const text_domain = 'q-sharelines'; // for translation ##
         
         // settings ##
         public $settings = array();
-        static $token = '**';
         static $facebook_app_id = '1381937288777556'; // default to qstudio
         
         /**
@@ -90,6 +86,9 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
                 
                 // scan content on save - if we find text between the defined tokens - add a post meta "_q_sharelines" ##
                 add_action( 'save_post', array( $this, 'save_post' ) );
+                
+                // style MCE ##
+                add_filter( 'mce_css', array( $this, 'mce_css' ) );
                 
             } else {
                 
@@ -287,6 +286,20 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
         
         
         
+        public function mce_css( $mce_css ) {
+            
+            #global $current_screen;
+
+            #if ( 'issue' === $current_screen -> post_type ) {
+                $mce_css .= ', ' . self::get_plugin_url( 'css/q-sharelines.css' );
+            #}
+            
+            return $mce_css;
+            
+	}
+        
+        
+        
         /**
          * Get Plugin URL
          * 
@@ -299,44 +312,6 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
 
             return plugins_url( ltrim( $path, '/' ), __FILE__ );
 
-        }
-        
-        
-        
-        /**
-         * Find a string between two other strings
-         * 
-         * @param       string      $string
-         * @param       type        $start
-         * @param       type        $end
-         * 
-         * @link        http://stackoverflow.com/questions/5696412/get-substring-between-two-strings-php
-         * @since       0.1
-         * @return      string
-         */
-        public static function get_string_between( $string = null )
-        {
-            
-            // kick back if nothing passed ##
-            if ( is_null( $string ) ) { return false; }
-            
-            // empty array ##
-            $matches = array();
-            
-            // search for the tokens in te string ##
-            preg_match_all( "(".preg_quote( self::$token ).".*?".preg_quote( self::$token ).")s", $string, $matches );
-                    
-            if ( array_filter( $matches ) ) {
-                
-                // return the array ##
-                #pr( $matches[0] );
-                return $matches[0];
-                
-            }
-            
-            // fallback ##
-            return false;
-            
         }
         
         
@@ -585,7 +560,6 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
                 
             }
             
-            #if ( $shareline = self::get_string_between( $_POST["content"] ) ) {
             if ( has_shortcode ( $_POST["content"], 'sharelines' ) ) {
                 
                 #echo $shareline;
@@ -643,13 +617,6 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
                 
             }
             
-            // check for actual sharelines ##
-            #if ( ! $shareline = self::get_string_between( $post->post_content ) ) {
-                
-                #return false;
-                
-            #}
-            
             // check if shortcode allowed ##
             if ( ! shortcode_exists ( 'sharelines' ) ) {
                 
@@ -690,9 +657,6 @@ if ( ! class_exists( 'Q_Sharelines' ) ) {
             
             // check if we should continue ##
             if ( ! self::check() ) { return false; }
-            
-            // check we can grab sharelines ##
-            #$sharelines = self::get_string_between( $post->post_content );
             
             // get all shortcodes in use ##
             $sharelines = self::get_shortcodes( $post->post_content );
@@ -789,15 +753,13 @@ jQuery(document).ready(function($) {
     
     // late load fb sharing library ##
     $sharelines = jQuery('.q-sharelines');
-    if ( $sharelines.length != 0 ) { // load options, if '.q-sharelines' selector found ##
+    if ( $sharelines.length != 0 ) { // load options, if '.q-sharelines' element found ##
         
         jQuery.ajaxSetup({ cache: true });
-        jQuery.getScript('//connect.facebook.net/en_UK/all.js', function(){
+        jQuery.getScript( '//connect.facebook.net/en_UK/all.js', function(){
           FB.init({
             appId: '<?php echo $facebook_app_id; ?>'
           });     
-          jQuery( '#loginbutton,#feedbutton' ).removeAttr('disabled');
-          //FB.getLoginStatus(updateStatusCallback);
         });
     }
    

@@ -10,3 +10,7 @@ Version: 0.1
 .q_shareline_item:hover {
     text-decoration: underline;
 }
+
+q.q_sharelines {
+    color: rgb(255, 0, 155);
+}

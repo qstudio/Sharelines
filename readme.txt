@@ -26,6 +26,11 @@ No applicable screenshots
 
 == Changelog ==
 
+= 0.2 =
+
+* Moved logic to [shortcode]
+* Added tinyMCE button and callback check to style [shortcode]
+
 = 0.1 =
 
 * Initial working version
